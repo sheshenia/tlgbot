@@ -42,12 +42,11 @@ func (t *TextMessage) Send(ctx ...context.Context) (*http.Response, error) {
 		req *http.Request
 		err error
 	)
-	c := &http.Client{}
+	c := &http.Client{Timeout: 5 * time.Second}
 	URL := fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", t.BotToken)
 	if len(ctx) > 0 {
 		req, err = http.NewRequestWithContext(ctx[0], "POST", URL, &buf)
 	} else {
-		c.Timeout = 10 * time.Second
 		req, err = http.NewRequest("POST", URL, &buf)
 	}
 	if err != nil {
